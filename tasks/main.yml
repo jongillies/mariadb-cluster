@@ -13,8 +13,8 @@
 #        id: 0xF1656F24C74CD1D8
 
 - name: copy the galera repo public key
-  template:
-    src: files/c74cd1d8.pub
+  copy:
+    src: c74cd1d8.pub
     dest: /root/c74cd1d8.pub
     group: root
     owner: root
