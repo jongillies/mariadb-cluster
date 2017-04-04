@@ -1,0 +1,19 @@
+---
+mariadb_nodes:
+  - name: gdb1
+    ip: 192.168.47.31
+    box: ubuntu/xenial64
+    ram: 1024
+    cpus: 2
+
+  - name: gdb2
+    ip: 192.168.47.32
+    box: ubuntu/xenial64
+    ram: 1024
+    cpus: 2
+
+  - name: gdb3
+    ip: 192.168.47.33
+    box: ubuntu/xenial64
+    ram: 1024
+    cpus: 2
