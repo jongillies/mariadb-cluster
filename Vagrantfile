@@ -37,10 +37,8 @@ Vagrant.configure(2) do |config|
         nodes = nodes_config['mariadb_nodes'].map{|x| x['ip'] }
         ansible.extra_vars = { my_name: node['name'],
                                my_ip: node['ip'],
-                               priority: node['priority'],
                                cluster_addresses: wsrep_cluster_address,
-                               first_node_name: nodes_config['mariadb_nodes'].first['name'],
-                               bootstrap_now: true
+                               first_node_name: nodes_config['mariadb_nodes'].first['name']
         }
       end
 
