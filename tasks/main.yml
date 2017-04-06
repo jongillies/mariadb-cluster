@@ -45,9 +45,9 @@
   command: >
     mysql -u root -e "update mysql.user set host='%' where user='root' and host='localhost'; flush privileges;"
 
-- name: copy the galera config
-  template:
-    src: templates/galera.cnf
-    dest: /etc/mysql/conf.d/galera.cnf
-    group: root
-    owner: root
+#- name: copy the galera config
+#  template:
+#    src: templates/galera.cnf
+#    dest: /etc/mysql/conf.d/galera.cnf
+#    group: root
+#    owner: root
