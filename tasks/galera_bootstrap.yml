@@ -1,31 +1,34 @@
 ---
-- hosts: all
-  serial: 1
+- name: get debian.cnf from node 1
+  fetch:
+    src: /etc/mysql/debian.cnf
+    dest: /tmp/node1.cnf
+  when: inventory_hostname == "{{ first_node_name }}"
 
-  tasks:
-    - name: get debian.cnf from node 1
-      fetch:
-        src: /etc/mysql/debian.cnf
-        dest: /tmp/node1.cnf
-      when: inventory_hostname == "{{ first_node_name }}"
+- name: copy debian.cnf to nother nodes
+  template:
+    src: /tmp/node1.cnf/gdb1/etc/mysql/debian.cnf
+    dest: /etc/mysql/debian.cnf
+  when: inventory_hostname != "{{ first_node_name }}"
 
-    - name: copy debian.cnf to nother nodes
-      template:
-        src: /tmp/node1.cnf/gdb1/etc/mysql/debian.cnf
-        dest: /etc/mysql/debian.cnf
-      when: inventory_hostname != "{{ first_node_name }}"
+- name: copy the galera config
+  template:
+    src: templates/galera.cnf
+    dest: /etc/mysql/conf.d/galera.cnf
+    group: root
+    owner: root
 
-    - name: stop mariadb on first mariadb galera cluster node
-      service: name=mysql state=stopped
-      when: inventory_hostname == "{{ first_node_name }}"
+- name: stop mariadb on first mariadb galera cluster node
+  service: name=mysql state=stopped
+  when: inventory_hostname == "{{ first_node_name }}"
 
-    - name: bootstrap first mariadb galera cluster node
-      command: galera_new_cluster
-      when: inventory_hostname == "{{ first_node_name }}"
+- name: bootstrap first mariadb galera cluster node
+  command: galera_new_cluster
+  when: inventory_hostname == "{{ first_node_name }}"
 
-    - name: restart the other mariadb galera cluster nodes
-      service: name=mysql state=restarted
-      when: inventory_hostname != "{{ first_node_name }}"
-      retries: 5
-      delay: 20
-      ignore_errors: true
+- name: restart the other mariadb galera cluster nodes
+  service: name=mysql state=restarted
+  when: inventory_hostname != "{{ first_node_name }}"
+  retries: 5
+  delay: 20
+  ignore_errors: true

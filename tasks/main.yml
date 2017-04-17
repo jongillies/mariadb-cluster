@@ -1,53 +1,11 @@
 ---
-- name: install prerequisite packages
-  package:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    - software-properties-common
 
-# This just did not work reliably all the time :(
-#    - name: add galera repo key
-#      apt_key:
-#        keyserver: keyserver.ubuntu.com:80
-#        id: 0xF1656F24C74CD1D8
+- debug: var=ansible_all_ipv4_addresses[0]
+- debug: var=ansible_default_ipv4.address
 
-- name: copy the galera repo public key
-  copy:
-    src: c74cd1d8.pub
-    dest: /root/c74cd1d8.pub
-    group: root
-    owner: root
-
-- name: add galera repo key
-  apt_key:
-    file: /root/c74cd1d8.pub
-
-- name: add galera repository
-  apt_repository:
-    repo: 'deb [arch=amd64,i386,ppc64el] http://nyc2.mirrors.digitalocean.com/mariadb/repo/10.1/ubuntu xenial main'
-    state: present
-
-- name: update apt cache
-  apt:
-    update_cache: yes
-    cache_valid_time: 3600
-
-- name: install mariadb packages
-  package:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    - mariadb-server
-    - rsync
-
-- name: update root mysql access
-  command: >
-    mysql -u root -e "update mysql.user set host='%' where user='root' and host='localhost'; flush privileges;"
-
-#- name: copy the galera config
-#  template:
-#    src: templates/galera.cnf
-#    dest: /etc/mysql/conf.d/galera.cnf
-#    group: root
-#    owner: root
+#
+#- include: galera.yml
+#  when: bootstrap is not defined
+#
+#- include: galera_bootstrap.yml
+#  when: bootstrap is defined

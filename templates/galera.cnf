@@ -15,6 +15,6 @@ wsrep_cluster_address="gcomm://{{ cluster_addresses }}"
 # Galera Synchronization Configuration
 wsrep_sst_method=rsync
 
-# Galera Node Configuration
-wsrep_node_address="{{ my_ip }}"
-wsrep_node_name="{{ my_name }}"
+# Galera Node Configuration (NOTE: the 1st address, ansible_all_ipv4_addresses[0], should be the private net in Vagrant)
+wsrep_node_address="{{ ansible_all_ipv4_addresses[0] }}"
+wsrep_node_name="{{ inventory_hostname }}"
