@@ -23,20 +23,11 @@ Keep in mind that the default listen address for `mysqld` is `127.0.0.1`.  The b
 
 Run the following command will bootstrap the cluster.  It should ONLY be run once.
 
-Change the `Vagrantfile` to set `bootstrap` to `true` and run:
-
-```bash
-vagrant provision
-```
-
-
-OLD:
-
 ```bash
 PYTHONUNBUFFERED=1 ANSIBLE_FORCE_COLOR=true ANSIBLE_HOST_KEY_CHECKING=false ANSIBLE_SSH_ARGS='-o UserKnownHostsFile=/dev/null -o IdentitiesOnly=yes -o ControlMaster=auto -o ControlPersist=60s' ansible-playbook --extra-vars "bootstrap=true first_node_name=gdb1 cluster_addresses=192.168.47.31,192.168.47.32,192.168.47.33" --connection=ssh --inventory-file=.vagrant/provisioners/ansible/inventory --sudo playbook.yml
 ```
-
 ## Step 3 - Check the Cluster Status
+
 
 ```bash
 vagrant ssh gdb1 -c "mysql -u root -e \"show status like 'wsrep_cluster_size'\""

@@ -1,11 +1,7 @@
 ---
 
-- debug: var=ansible_all_ipv4_addresses[0]
-- debug: var=ansible_default_ipv4.address
+- include: galera.yml
+  when: bootstrap is not defined
 
-#
-#- include: galera.yml
-#  when: bootstrap is not defined
-#
-#- include: galera_bootstrap.yml
-#  when: bootstrap is defined
+- include: galera_bootstrap.yml
+  when: bootstrap is defined
